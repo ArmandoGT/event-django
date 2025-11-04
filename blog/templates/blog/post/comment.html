@@ -1,0 +1,35 @@
+{% extends "blog/base.html" %}
+
+{% block titulo %} Comentário - {{ post.titulo }} {% endblock %}
+
+{% block conteudo %}
+{% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="user">Usuário</label>
+                <input type="text" id="user" name="Nome" value="{{ user.username }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" email="Email" value="{{ user.email }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="content">Comentário</label>
+                <textarea id="content" name="content" rows="6" cols="23"></textarea>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Salvar">
+            </div>
+        </form>
+{% else %}
+    <h3 class="alert">Página Disponível apenas para usuários autenticados</h3>
+    <h4 class="warning">Por favor faça login ou cadastra-se</h4>
+    <p><a href="{% url 'blog:list_posts' %}" class="btn btn-warning">Voltar aos posts</a></p>
+{% endif %}
+
+ {% endblock %}

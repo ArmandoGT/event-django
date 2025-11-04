@@ -1,0 +1,14 @@
+{% extends "blog/base.html" %}
+
+{% block titulo %} Cadastro de Usuários {% endblock %}
+
+{% block conteudo %}
+    <div class="container">
+        <form method="post" action="{% url 'blog:cadastrouser' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Criar novo usuário">
+        </form>
+    </div>
+
+{% endblock %}

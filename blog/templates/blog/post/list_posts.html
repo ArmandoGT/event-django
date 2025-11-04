@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Meu Blog{% endblock %}
+
+{% block conteudo %}
+  <h1>Meu Blog</h1>
+    <div>
+        {% if messages %}
+            {% for m in messages %}
+                <p>{{ m }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+
+  {% for p in posts %}
+    <h2>
+      <a href="{% url 'blog:detail_post' p.slug %}">{{ p.title }}</a>
+    </h2>
+    <p class="date">
+      Publicado em {{ p.publish }} por {{ p.author.username }}
+    </p>
+    <p>
+      {{ p.content|truncatewords:15|linebreaks }}
+    </p>
+  {% empty %}
+    <p>Nenhum post encontrado.</p>
+  {% endfor %}
+
+  {% include "paginator.html" with page=page_obj %}
+
+{% endblock %}
