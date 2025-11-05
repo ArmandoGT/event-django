@@ -85,6 +85,9 @@ class comment_views(CreateView):
 
     def form_invalid(self, form, *args, **kwargs):
         post = self._get_post(self.kwargs['pk'])
+        messages.error(self.request, 'Comentário não enviado. Corrija os erros do formulário.')
+        context = self.get_context_data(form=form, **kwargs)
+        return self.render_to_response(context)
 
 class CadUserView(CreateView):
     template_name = 'blog/users/caduser.html'
