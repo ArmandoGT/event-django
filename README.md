@@ -85,4 +85,4 @@ Este projeto está licenciado sob a **Licença MIT** - veja o arquivo [LICENSE](
 
 ---
 
-**Desenvolvido com paixão 💻 por [ArmandoGT](https://github.com/ArmandoGT)**
+**Criado com dedicação 🧭 por [ArmandoGT](https://github.com/ArmandoGT)**
