@@ -1,0 +1,46 @@
+{% extends 'eventos/base.html' %}
+
+{% block titulo %}{{ evento.titulo }}{% endblock %}
+
+{% block conteudo %}
+  <h1>{{ evento.titulo }}</h1>
+
+  <p class="date">
+    Publicado por {{ evento.organizador.username }}
+  </p>
+
+  <p>
+    {{ evento.descricao|linebreaks }}
+  </p>
+
+  <hr>
+
+  <!-- Compartilhar evento -->
+  <div class="mb-4">
+    <h4 class="h5">Compartilhar</h4>
+    <a href="{% url 'events:sharepost' evento.pk %}" class="btn btn-outline-primary btn-sm">
+      Enviar este evento
+    </a>
+  </div>
+
+  <!-- Comentários -->
+  <div class="mt-4">
+    <h4 class="h5">Comentários</h4>
+
+    {% if comments %}
+      {% for c in comments %}
+        <div class="comment mb-3">
+          <p class="mb-1"><strong>{{ c.name }}</strong></p>
+          <p class="mb-0 small text-muted">{{ c.created }}</p>
+          <p class="mt-2 mb-0">{{ c.comment|linebreaks }}</p>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-muted">Nenhum comentário ainda.</p>
+    {% endif %}
+
+    <a href="{% url 'events:comment' evento.pk %}" class="btn btn-primary btn-sm mt-2">
+      Adicionar seu comentário
+    </a>
+  </div>
+{% endblock %}

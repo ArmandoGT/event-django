@@ -1,0 +1,156 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", helvetica, sans-serif;
+    background: #f5f5f7;
+    color: #333;
+}
+
+/* links */
+a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* títulos */
+h1 {
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+    padding: 0 0 10px 0;
+    margin-top: 0;
+}
+
+h2 {
+    font-weight: 500;
+    margin: 30px 0 10px;
+}
+
+/* layout principal */
+#content {
+    float: left;
+    width: 60%;
+    padding: 20px 30px;
+    margin: 20px 0 20px 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+#sidebar {
+    float: right;
+    width: 30%;
+    padding: 16px 16px 20px;
+    margin: 20px 20px 20px 0;
+    background: #f1f3f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+/* texto de data dos eventos */
+p.date {
+    color: #999;
+    font-family: georgia, serif;
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* paginação */
+.pagination {
+    margin: 40px 0;
+    font-weight: bold;
+}
+
+/* forms genéricos (sem Bootstrap) */
+label {
+    display: block;
+    color: #333;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+input,
+textarea {
+    display: block;
+    width: 100%;
+    margin: 0 0 10px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.15);
+}
+
+input[type=submit] {
+    font-weight: bold;
+    background: #0d6efd;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background: #0b5ed7;
+}
+
+/* lista de erros de formulário */
+.errorlist {
+    color: #cc0033;
+    padding-left: 10px;
+    margin: 0 0 8px;
+    font-size: 13px;
+}
+.errorlist li {
+    list-style: none;
+}
+
+/* comentários */
+.comment {
+    padding: 10px;
+    border-radius: 4px;
+}
+.comment:nth-child(even) {
+    background: #efefef;
+}
+.comment .info {
+    font-weight: bold;
+    font-size: 12px;
+    color: #666;
+}
+
+/* listas (não esconder mais!) */
+ul {
+    margin: 0 0 10px 20px;
+    padding: 0;
+}
+ul li {
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+/* responsivo: empilhar content + sidebar no mobile */
+@media (max-width: 768px) {
+    #content,
+    #sidebar {
+        float: none;
+        width: 100%;
+        margin: 10px 10px;
+        padding: 16px;
+    }
+}

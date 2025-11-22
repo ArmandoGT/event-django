@@ -6,82 +6,82 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, CreateView
 
-from .forms import EmailPostForm, CommentForm, CadUserForm, LoginForm
-from .models import Post
+from .forms import EmailEventoForm, CommentForm, CadUserForm, LoginForm
+from .models import Evento
 
-class ListPostsView(ListView):
-    queryset = Post.published.all()
-    context_object_name = 'posts'
-    paginate_by = 2
-    template_name = 'blog/post/list_posts.html'
+class EventoListView(ListView):
+    context_object_name = 'Eventos'
+    model = Evento
+    template_name = 'eventos/myevent/list_eventos.html'
 
-class DetailPostView(DetailView):
-    template_name = 'blog/post/detail_post.html'
-    context_object_name = 'post'
-    model = Post
+class EventoDetailView(DetailView):
+    context_object_name = 'evento'
+    model = Evento
+    template_name = 'eventos/myevent/detail_event.html'
 
     def _get_comments(self, id_post):
         try:
-            post = Post.objects.get(pk=id_post)
+            post = Evento.objects.get(pk=id_post)
             return post.comments.all()
-        except Post.DoesNotExist:
+        except Evento.DoesNotExist:
             raise Http404
 
     def get_context_data(self, **kwargs):
-        context = super(DetailPostView, self).get_context_data(**kwargs)
+        context = super(EventoDetailView, self).get_context_data(**kwargs)
         context['comments'] = self._get_comments(self.object.id)
         return context
 
 
-class FormPostView(FormView):
-    template_name = 'blog/post/sharepost.html'
-    form_class = EmailPostForm
-    success_url = reverse_lazy('blog:list_posts')
+class FormEventoView(FormView):
+    template_name = 'eventos/myevent/eventshare.html'
+    form_class = EmailEventoForm
+    success_url = reverse_lazy('events:list_eventos')
 
-    def get_post(self, id_post):
+    def get_post(self, pk):
         try:
-            return Post.objects.get(pk=id_post)
-        except Post.DoesNotExist:
-            messages.error(self.request, 'Post not found')
+            return Evento.objects.get(pk=pk)
+        except Evento.DoesNotExist:
+            messages.error(self.request, 'Evento não encontrado')
             return None
 
     def get_context_data(self, **kwargs):
-        context = super(FormPostView, self).get_context_data(**kwargs)
-        context['post'] = self.get_post(self.kwargs['pk'])
+        context = super().get_context_data(**kwargs)
+        context['myevent'] = self.get_post(self.kwargs['pk'])
         return context
 
     def form_valid(self, form, *args, **kwargs):
-        mypost = self.get_context_data()['post']
+        mypost = self.get_context_data()['myevent']
         form.send_email(mypost)
-        messages.success(self.request, f'Post {mypost.title} ' f'enviado com sucesso')
-        return super(FormPostView, self).form_valid(form, *args, **kwargs)
+        messages.success(self.request, f'Evento \"{mypost.titulo}\" enviado com sucesso')
+        return super().form_valid(form, *args, **kwargs)
 
     def form_invalid(self, form, *args, **kwargs):
-        mypost = self.get_context_data()['post']
-        messages.error(self.request, f'Post {mypost.title} ' f'não foi enviado')
-        return super(FormPostView, self).form_invalid(form, *args, **kwargs)
+        mypost = self.get_context_data().get('myevent')
+        messages.error(self.request, f'Evento \"{mypost.titulo if mypost else ""}\" não foi enviado')
+        return super().form_invalid(form, *args, **kwargs)
+
 
 
 class comment_views(CreateView):
-    template_name = 'blog/post/comment.html'
+    template_name = 'eventos/myevent/comment.html'
     form_class = CommentForm
 
-    def _get_post(self, id_post):
+    def _get_post(self, pk):
         try:
-            post = Post.objects.get(pk=id_post)
-            return post
-        except Post.DoesNotExist:
-            messages.error(self.request, 'Post not found')
+            evento = Evento.objects.get(pk=pk)
+            return evento
+        except Evento.DoesNotExist:
+            messages.error(self.request, 'Evento não encontrado')
 
     def get_context_data(self, **kwargs):
         context = super(comment_views, self).get_context_data(**kwargs)
-        context['post'] = self._get_post(self.kwargs['pk'])
+        context['myevent'] = self._get_post(self.kwargs['pk'])
         return context
 
     def form_valid(self, form, *args, **kwargs):
         post = self._get_post(self.kwargs['pk'])
         form.save_comment(post)
-        return redirect('blog:detail_post', slug=post.slug)
+        return redirect('events:detail_event', slug=post.slug)
 
     def form_invalid(self, form, *args, **kwargs):
         post = self._get_post(self.kwargs['pk'])
@@ -89,10 +89,11 @@ class comment_views(CreateView):
         context = self.get_context_data(form=form, **kwargs)
         return self.render_to_response(context)
 
+
 class CadUserView(CreateView):
-    template_name = 'blog/users/caduser.html'
+    template_name = "eventos/users/caduser.html"
     form_class = CadUserForm
-    success_url = reverse_lazy('blog:loginuser')
+    success_url = reverse_lazy('events:loginuser')
 
     def form_valid(self, form, *args, **kwargs):
         form.cleaned_data
@@ -105,24 +106,23 @@ class CadUserView(CreateView):
         return super(CadUserView, self).form_invalid(form, *args, **kwargs)
 
 class LoginUserView(LoginView):
-    template_name = 'blog/users/login.html'
+    template_name = 'eventos/users/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('blog:list_posts')
+    success_url = reverse_lazy('events:list_eventos')
 
     def form_valid(self, form, *args, **kwargs):
         user = authenticate(self.request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
         if user is not None:
             login(self.request, user)
-            messages.success(self.request, f"Login successful {user.username}")
-            return redirect('blog:list_posts')
+            return redirect('events:list_eventos')
         else:
             messages.error(self.request, 'Login failed')
-            return redirect('blog:loginuser')
+            return redirect('events:loginuser')
         
     def form_invalid(self, form, *args, **kwargs):
         messages.error(self.request, 'Login failed')
-        return redirect('blog:loginuser')
+        return redirect('events:loginuser')
 
 
 class LogoutUserView(LogoutView):
-    next_page = reverse_lazy('blog:list_posts')
+    next_page = reverse_lazy('events:list_eventos')

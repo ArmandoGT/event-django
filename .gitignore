@@ -1,7 +1,42 @@
-*.pyc
-__pycache__
-.venv
+# === Python / Bytecode ===
+__pycache__/
+*.py[cod]
+*$py.class
+
+# === Virtualenv ===
+.venv/
+venv/
+
+# === Banco local (Django) ===
 db.sqlite3
-.DB_store
-.idea
+
+# === Logs ===
+*.log
+
+# === Arquivos temporários / backup ===
 *.*~
+*.swp
+*.swo
+
+# === IDEs / Editor ===
+.idea/
+.vscode/
+
+# === Arquivos de sistema ===
+.DS_Store
+.DB_store
+Thumbs.db
+
+# === Configurações sensíveis ===
+.env
+*.env
+
+# === Django: arquivos gerados ===
+static/
+staticfiles/
+media/
+
+# === Testes / cobertura ===
+.pytest_cache/
+.coverage
+htmlcov/
