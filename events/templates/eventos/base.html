@@ -2,28 +2,30 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>{% block titulo %}{% endblock %}</title>
-  <link href="{% static 'css/blog.css' %}" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>{% block titulo %}{% endblock %}</title>
+    <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-  <div id="content">
+<div id="content">
     {% block conteudo %}{% endblock %}
-  </div>
+</div>
 <div id="sidebar">
-  <h2><a href="{% url 'events:list_eventos' %}">Sistema de Eventos</a></h2>
-  <p>Estes são nossos eventos</p>
-  {% if user.is_anonymous %}
+    <h2><a href="{% url 'events:list_eventos' %}">Sistema de Eventos</a></h2>
+    <p>Estes são nossos eventos</p>
+    {% if user.is_anonymous %}
     <p><a class="btn btn-primary" href="{% url 'events:cadastrouser' %}">Cadastrar</a></p>
     <p><a class="btn btn-success" href="{% url 'events:loginuser' %}">Entrar</a></p>
-  {% else %}
+    {% else %}
     <p>Usuário: <b>{{ user.username }}</b></p>
     <form method="post" action="{% url 'events:logoutuser' %}" style="display:inline;">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger">Sair</button>
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sair</button>
     </form>
-  {% endif %}
+    {% endif %}
 </div>
 </body>
 </html>
